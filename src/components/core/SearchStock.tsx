@@ -39,7 +39,7 @@ export function SearchStock(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    setScrollAreaOpen(!!data?.bestMatches.length && keyword !== '');
+    setScrollAreaOpen(!!data?.bestMatches?.length && keyword !== '');
   }, [data, keyword]);
 
   return (
