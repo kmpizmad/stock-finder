@@ -27,12 +27,15 @@ export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
   return (
     <>
       <div className="mb-8">
-        <div className="grid grid-cols-1 gap-2 text-center sm:text-left lg:grid-cols-6 place-items-center sm:grid-cols-2 sm:place-items-start md:gap-4">
+        <div className="grid grid-cols-1 gap-2 text-center md:text-left md:grid-cols-4 lg:grid-cols-5 place-items-center sm:grid-cols-2 sm:place-items-start md:gap-4">
           {data?.map((detail, idx) => {
             return (
-              <div key={`${JSON.stringify(detail)}-${idx}`}>
-                <div className="w-full text-lg font-bold md:w-max">{capitalize(detail.name)}</div>
-                <div className="w-full font-light">{detail.value}</div>
+              <div
+                key={`${JSON.stringify(detail)}-${idx}`}
+                className="w-full"
+              >
+                <div className="text-lg font-bold">{capitalize(detail.name)}</div>
+                <div className="font-light">{detail.value}</div>
               </div>
             );
           })}

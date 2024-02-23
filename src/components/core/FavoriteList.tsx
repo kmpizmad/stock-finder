@@ -2,7 +2,7 @@
 
 import useFavoriteStocks from '@/hooks/useFavoriteStocks';
 import { useState } from 'react';
-import Favorite from './Favorite';
+import Favorite from '../layout/Favorite';
 
 export default function FavoriteList(): JSX.Element {
   const [favorites, setFavorites] = useState<string[]>(JSON.parse(localStorage.getItem('favorites') || '[]'));
@@ -16,7 +16,7 @@ export default function FavoriteList(): JSX.Element {
             key={`${JSON.stringify(stock.data)}-${idx}`}
             className="flex items-center justify-between py-4 border-b border-muted"
           >
-            <div className="grid grid-cols-[repeat(2,max-content)] gap-x-4">
+            <div className="grid grid-cols-1 sm:grid-cols-[repeat(2,max-content)] gap-x-4">
               <div>
                 Name: {stock.data?.['2. name']} ({stock.data?.['1. symbol']})
               </div>
