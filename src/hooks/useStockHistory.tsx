@@ -10,8 +10,8 @@ export default function useStockHistory(symbol: string) {
     queryFn: async ({ queryKey }) => {
       const [_, sym] = queryKey;
       const { data } = await axios.get<DailyHistoryResponse>(
-        // `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${sym}&apikey=${API_KEY}`
-        'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&apikey=demo'
+        `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${sym}&apikey=${API_KEY}`
+        // 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&apikey=demo'
       );
       return data;
     },

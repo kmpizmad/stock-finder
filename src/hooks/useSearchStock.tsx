@@ -11,8 +11,8 @@ export default function useSearchStock(keyword: string) {
     queryFn: async ({ queryKey }) => {
       const [_, kw] = queryKey;
       const { data } = await axios.get<SearchResponse>(
-        // `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${kw}&apikey=${API_KEY}`
-        'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo'
+        `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${kw}&apikey=${API_KEY}`
+        // 'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo'
       );
       return data;
     },

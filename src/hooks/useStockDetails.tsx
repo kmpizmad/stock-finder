@@ -9,8 +9,8 @@ export function useStockDetails(symbol: string) {
     queryFn: async ({ queryKey }) => {
       const [_, sym] = queryKey;
       const { data } = await axios.get<DetailResponse>(
-        // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${API_KEY}`
-        'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo'
+        `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${API_KEY}`
+        // 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo'
       );
       return data;
     },
