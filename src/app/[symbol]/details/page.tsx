@@ -1,11 +1,13 @@
 'use client';
 
 import BackButton from '@/components/layout/BackButton';
-import Favorite from '@/components/layout/Favorite';
 import StockDetail from '@/components/core/StockDetail';
 import Heading from '@/components/layout/Heading';
 import Separator from '@/components/layout/Separator';
 import { PageParams } from '@/interfaces/page';
+import dynamic from 'next/dynamic';
+
+const Favorite = dynamic(() => import('@/components/layout/Favorite'), { ssr: false });
 
 export default function StockDetails({ params }: PageParams<{ symbol: string }>) {
   return (
