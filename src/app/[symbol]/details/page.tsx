@@ -10,7 +10,7 @@ export default function StockDetails({ params }: PageParams<{ symbol: string }>)
         <h1 className="w-full text-5xl font-bold text-center">{params.symbol} details</h1>
         <Favorite symbol={params.symbol} />
       </div>
-      <div className="w-full h-px my-3 bg-foreground"></div>
+      <div className="w-full h-px my-4 bg-foreground"></div>
       <StockDetail symbol={params.symbol} />
     </div>
   );
