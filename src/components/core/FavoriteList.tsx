@@ -14,11 +14,11 @@ export default function FavoriteList(): JSX.Element {
   return (
     <div>
       {stocks.map((stock, idx) => {
-        if (stock.error) {
+        if (stock.error || typeof stock.data === 'string') {
           return (
             <ErrorMessage
               key={`${JSON.stringify(stock.data)}-${idx}`}
-              message={stock.error?.message}
+              message={stock.error?.message || JSON.stringify(stock.data)}
               resource={favorites[idx]}
             />
           );

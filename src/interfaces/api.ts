@@ -1,5 +1,5 @@
 export interface SearchResponse {
-  bestMatches: {
+  bestMatches?: {
     '1. symbol': string;
     '2. name': string;
     '3. type': string;
@@ -10,10 +10,11 @@ export interface SearchResponse {
     '8. currency': string;
     '9. matchScore': string;
   }[];
+  Information?: string;
 }
 
 export interface DetailResponse {
-  'Global Quote': {
+  'Global Quote'?: {
     '01. symbol': string;
     '02. open': string;
     '03. high': string;
@@ -25,16 +26,17 @@ export interface DetailResponse {
     '09. change': string;
     '10. change percent': string;
   };
+  'Information'?: string;
 }
 
 export interface DailyHistoryResponse {
-  'Meta Data': {
+  'Meta Data'?: {
     '1. Information': string;
     '2. Symbol': string;
     '3. Last Refreshed': string;
     '4. Time Zone': string;
   };
-  'Time Series (Daily)': {
+  'Time Series (Daily)'?: {
     [x: string]: {
       '1. open': string;
       '2. high': string;
@@ -43,4 +45,5 @@ export interface DailyHistoryResponse {
       '5. volume': string;
     };
   };
+  'Information'?: string;
 }

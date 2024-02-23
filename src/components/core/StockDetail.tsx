@@ -26,10 +26,10 @@ export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
   const { data, isLoading, error } = useStockDetails(symbol);
   const { data: history, isLoading: isHistoryLoading, error: historyError } = useStockHistory(symbol);
 
-  if (error) {
+  if (!!error || typeof data === 'string') {
     return (
       <ErrorMessage
-        message={error?.message}
+        message={error?.message || JSON.stringify(data)}
         resource={symbol}
       />
     );
@@ -62,7 +62,7 @@ export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
       <div className="text-center">
         <h1 className="mb-4 text-2xl font-bold">Last 30 day</h1>
         {!isHistoryLoading ? (
-          !historyError ? (
+          !historyError && typeof history !== 'string' ? (
             <div>
               <Line
                 data={{
@@ -75,7 +75,7 @@ export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
             </div>
           ) : (
             <ErrorMessage
-              message={historyError.message}
+              message={historyError?.message || JSON.stringify(history)}
               resource={symbol}
             />
           )

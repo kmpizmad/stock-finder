@@ -49,7 +49,7 @@ export function SearchStock(): JSX.Element {
         placeholder="Search stock symbol..."
         onChange={update}
       />
-      {!error ? (
+      {!error && !!data?.bestMatches ? (
         scrollAreaOpen ? (
           <ScrollArea
             className="mt-2 border rounded-md"
@@ -59,7 +59,7 @@ export function SearchStock(): JSX.Element {
               ref={stockContainerRef}
               className="py-2"
             >
-              {data?.bestMatches?.map(match => {
+              {data?.bestMatches.map(match => {
                 return (
                   <Link
                     key={match['1. symbol']}
@@ -76,7 +76,7 @@ export function SearchStock(): JSX.Element {
         ) : null
       ) : (
         <ErrorMessage
-          message={error.message}
+          message={error?.message || data?.Information}
           resource={keyword}
         />
       )}

@@ -5,7 +5,7 @@ import { DailyHistoryResponse } from '@/interfaces/api';
 import { API_KEY } from '@/env';
 
 export default function useStockHistory(symbol: string) {
-  return useQuery<DailyHistoryResponse, Error, MappedHistory, [string, string]>({
+  return useQuery<DailyHistoryResponse, Error, MappedHistory | string, [string, string]>({
     queryKey: ['stockHistory', symbol],
     queryFn: async ({ queryKey }) => {
       const [_, sym] = queryKey;
@@ -20,13 +20,15 @@ export default function useStockHistory(symbol: string) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     select: data => {
-      const labels = Object.keys(data['Time Series (Daily)']).slice(0, 30);
+      if (!!data.Information) return data.Information;
+      const labels = Object.keys(data['Time Series (Daily)']!).slice(0, 30);
+      const dataset = Object.values(data['Time Series (Daily)']!);
       const commonOptions: Omit<ChartDataset<'line', string[]>, 'data'> = {
         tension: 0.3,
       };
       const highDataset: ChartDataset<'line', string[]> = {
         label: 'High',
-        data: Object.values(data['Time Series (Daily)'])
+        data: dataset
           .map(x => {
             return x['2. high'];
           })
@@ -37,7 +39,7 @@ export default function useStockHistory(symbol: string) {
       };
       const lowDataset: ChartDataset<'line', string[]> = {
         label: 'Low',
-        data: Object.values(data['Time Series (Daily)'])
+        data: dataset
           .map(x => {
             return x['3. low'];
           })
@@ -48,7 +50,7 @@ export default function useStockHistory(symbol: string) {
       };
       const openDataset: ChartDataset<'line', string[]> = {
         label: 'Open',
-        data: Object.values(data['Time Series (Daily)'])
+        data: dataset
           .map(x => {
             return x['1. open'];
           })
@@ -59,7 +61,7 @@ export default function useStockHistory(symbol: string) {
       };
       const closeDataset: ChartDataset<'line', string[]> = {
         label: 'Close',
-        data: Object.values(data['Time Series (Daily)'])
+        data: dataset
           .map(x => {
             return x['4. close'];
           })
@@ -70,7 +72,7 @@ export default function useStockHistory(symbol: string) {
       };
       const volumeDataset: ChartDataset<'line', string[]> = {
         label: 'Volume',
-        data: Object.values(data['Time Series (Daily)'])
+        data: dataset
           .map(x => {
             return x['5. volume'];
           })

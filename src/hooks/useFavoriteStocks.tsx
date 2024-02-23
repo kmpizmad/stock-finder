@@ -22,7 +22,7 @@ export default function useFavoriteStocks(symbols: string[]) {
         refetchOnMount: false,
         staleTime: Infinity,
         select: (data: SearchResponse) => {
-          return data.bestMatches.find(x => +x['9. matchScore'] === 1);
+          return data.bestMatches?.find(x => +x['9. matchScore'] === 1) || data.Information;
         },
       };
     }),

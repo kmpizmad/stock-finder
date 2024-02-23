@@ -4,7 +4,7 @@ import { DetailResponse } from '@/interfaces/api';
 import { API_KEY } from '@/env';
 
 export function useStockDetails(symbol: string) {
-  return useQuery<DetailResponse, Error, MappedDetail[], [string, string]>({
+  return useQuery<DetailResponse, Error, MappedDetail[] | string, [string, string]>({
     queryKey: ['stockDetails', symbol],
     queryFn: async ({ queryKey }) => {
       const [_, sym] = queryKey;
@@ -19,8 +19,9 @@ export function useStockDetails(symbol: string) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     select: data => {
+      if (!!data.Information) return data.Information;
       const result: MappedDetail[] = [];
-      for (const [key, value] of Object.entries(data['Global Quote'])) {
+      for (const [key, value] of Object.entries(data['Global Quote']!)) {
         result.push({ name: key.substring(3).trim(), value });
       }
       return result;
