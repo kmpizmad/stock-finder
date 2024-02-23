@@ -7,48 +7,37 @@ import Link from 'next/link';
 
 type ActionGroupObject = { id: string; icon: JSX.Element; link: string };
 
-export default function Sidebar({
-  iconSize,
-  paddingX,
-  offset,
-}: {
-  iconSize: number;
-  paddingX: number;
-  offset: number;
-}): JSX.Element {
-  const actionGroups: ActionGroupObject[][] = useMemo(() => {
-    return [
-      [
-        {
-          id: 'group-icon-search',
-          icon: (
-            <TextSearch
-              width={iconSize}
-              height={iconSize}
-            />
-          ),
-          link: '/',
-        },
-        {
-          id: 'group-icon-crown',
-          icon: (
-            <Crown
-              width={iconSize}
-              height={iconSize}
-            />
-          ),
-          link: '/favorites',
-        },
-      ],
-    ];
-  }, [iconSize]);
+const iconSize: number = 20;
+const actionGroups: ActionGroupObject[][] = [
+  [
+    {
+      id: 'group-icon-search',
+      icon: (
+        <TextSearch
+          width={iconSize}
+          height={iconSize}
+        />
+      ),
+      link: '/',
+    },
+    {
+      id: 'group-icon-crown',
+      icon: (
+        <Crown
+          width={iconSize}
+          height={iconSize}
+        />
+      ),
+      link: '/favorites',
+    },
+  ],
+];
+
+export default function Sidebar(): JSX.Element {
   const [selectedId, setSelectedId] = useState<string>(actionGroups[0][0].id);
 
   return (
-    <aside
-      className="fixed bottom-0 left-0 flex flex-col items-center justify-between border-r bg-background border-border"
-      style={{ top: `${offset}px` }}
-    >
+    <aside className="fixed top-0 bottom-0 left-0 flex flex-col items-center justify-between border-r bg-background border-border">
       <div>
         {actionGroups.map((group, index) => {
           return (
@@ -60,8 +49,7 @@ export default function Sidebar({
                 return (
                   <li
                     key={item.id}
-                    className={cn('nav-item', { active: item.id === selectedId })}
-                    style={{ paddingLeft: paddingX, paddingRight: paddingX }}
+                    className={cn('nav-item px-6', { active: item.id === selectedId })}
                     onClick={() => {
                       setSelectedId(item.id);
                     }}

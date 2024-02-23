@@ -93,3 +93,9 @@
   width: 5px;
   @apply absolute top-0 bottom-0 left-0 bg-muted;
 }
+
+.detail-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content 1fr;
+  align-items: center;
+}
