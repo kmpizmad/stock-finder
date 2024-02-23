@@ -8,7 +8,7 @@ import LoadingSkeleton from '../layout/LoadingSkeleton';
 import ErrorMessage from './ErrorMessage';
 
 export default function FavoriteList(): JSX.Element {
-  const [favorites, setFavorites] = useState<string[]>(JSON.parse(localStorage.getItem('favorites') || '[]'));
+  const [favorites, setFavorites] = useState<string[]>(JSON.parse(window.localStorage.getItem('favorites') || '[]'));
   const stocks = useFavoriteStocks(favorites);
 
   return (

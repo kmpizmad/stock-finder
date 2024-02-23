@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export default function Favorite({ symbol, initialFavorites, onFavorite }: FavoriteProps): JSX.Element {
   const favorites = useMemo(
-    () => initialFavorites || (JSON.parse(localStorage.getItem('favorites') || '[]') as string[]),
+    () => initialFavorites || (JSON.parse(window.localStorage.getItem('favorites') || '[]') as string[]),
     [initialFavorites]
   );
   const [isFavorite, setIsFavorite] = useState<boolean>(favorites.includes(symbol));
@@ -26,7 +26,7 @@ export default function Favorite({ symbol, initialFavorites, onFavorite }: Favor
           const set = new Set([...favorites, symbol]);
           newFavorites = Array.from(set);
         }
-        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+        window.localStorage.setItem('favorites', JSON.stringify(newFavorites));
         setIsFavorite(prev => !prev);
         if (onFavorite) onFavorite(newFavorites);
       }}
