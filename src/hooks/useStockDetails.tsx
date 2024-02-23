@@ -21,8 +21,7 @@ export function useStockDetails(symbol: string) {
     select: data => {
       const result: MappedDetail[] = [];
       for (const [key, value] of Object.entries(data['Global Quote'])) {
-        const name = key.substring(3).trim();
-        result.push({ name: capitalize(name), value });
+        result.push({ name: key.substring(3).trim(), value });
       }
       return result;
     },

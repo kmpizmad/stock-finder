@@ -26,3 +26,23 @@ export interface DetailResponse {
     '10. change percent': string;
   };
 }
+
+export interface DailyHistoryResponse {
+  'Meta Data': {
+    '1. Information': string;
+    '2. Symbol': string;
+    '3. Last Refreshed': string;
+    '4. Time Zone': string;
+  };
+  'Time Series (Daily)': {
+    [x: string]: {
+      '1. open': string;
+      '2. high': string;
+      '3. low': string;
+      '4. close': string;
+      '5. adjusted close': string;
+      '6. volume': string;
+      '7. dividend amount': string;
+    };
+  };
+}
