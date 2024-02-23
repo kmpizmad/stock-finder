@@ -84,7 +84,7 @@ export default function Sidebar(): JSX.Element {
         })}
       </div>
       <div
-        className={cn('flex w-full nav-item', {
+        className={cn('flex w-full nav-item transition-all', {
           'justify-end': isOpen,
           'justify-center': !isOpen,
         })}

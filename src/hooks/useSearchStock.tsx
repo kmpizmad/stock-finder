@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useDebounce } from '@uidotdev/usehooks';
 import { SearchResponse } from '@/interfaces/api';
 import { API_KEY } from '@/env';
-import { useDebounce } from '@uidotdev/usehooks';
 
 export default function useSearchStock(keyword: string) {
   const debouncedKeyword = useDebounce(keyword, 750);

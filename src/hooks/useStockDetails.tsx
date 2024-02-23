@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { capitalize } from '@/lib/utils';
 import { DetailResponse } from '@/interfaces/api';
+import { API_KEY } from '@/env';
 
 export function useStockDetails(symbol: string) {
   return useQuery<DetailResponse, Error, MappedDetail[], [string, string]>({

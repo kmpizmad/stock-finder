@@ -1,9 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
-import { useStockDetails } from '@/hooks/useStockDetails';
-import useStockHistory from '@/hooks/useStockHistory';
-import { capitalize } from '@/lib/utils';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -15,44 +11,60 @@ import {
   PointElement,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { useStockDetails } from '@/hooks/useStockDetails';
+import useStockHistory from '@/hooks/useStockHistory';
+import { capitalize } from '@/lib/utils';
+import LoadingSkeleton from '../layout/LoadingSkeleton';
+import { Skeleton } from '../ui/skeleton';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LineElement, LinearScale, PointElement);
 
-const chartSize: number = 400;
+const chartSize: number = 800;
 
 export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
-  const { data } = useStockDetails(symbol);
-  const { data: history } = useStockHistory(symbol);
+  const { data, isLoading } = useStockDetails(symbol);
+  const { data: history, isLoading: isHistoryLoading } = useStockHistory(symbol);
 
   return (
     <>
       <div className="mb-8">
-        <div className="grid grid-cols-1 gap-2 text-center md:text-left md:grid-cols-4 lg:grid-cols-5 place-items-center sm:grid-cols-2 sm:place-items-start md:gap-4">
-          {data?.map((detail, idx) => {
-            return (
-              <div
-                key={`${JSON.stringify(detail)}-${idx}`}
-                className="w-full"
-              >
-                <div className="text-lg font-bold">{capitalize(detail.name)}</div>
-                <div className="font-light">{detail.value}</div>
-              </div>
-            );
-          })}
-        </div>
+        {!isLoading ? (
+          <div className="grid grid-cols-1 gap-2 text-center md:text-left md:grid-cols-4 lg:grid-cols-5 place-items-center sm:grid-cols-2 sm:place-items-start md:gap-4">
+            {data?.map((detail, idx) => {
+              return (
+                <div
+                  key={`${JSON.stringify(detail)}-${idx}`}
+                  className="w-full"
+                >
+                  <div className="text-lg font-bold">{capitalize(detail.name)}</div>
+                  <div className="font-light">{detail.value}</div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <LoadingSkeleton
+            centered
+            noAvatar
+          />
+        )}
       </div>
       <div className="text-center">
         <h1 className="mb-4 text-2xl font-bold">Last 30 day</h1>
-        <div>
-          <Line
-            data={{
-              labels: history?.labels,
-              datasets: [...(history?.datasets.high_low || []), ...(history?.datasets.open_close || [])],
-            }}
-            className="mx-auto"
-            style={{ width: chartSize * 2, height: chartSize, maxWidth: '100%' }}
-          />
-        </div>
+        {!isHistoryLoading ? (
+          <div>
+            <Line
+              data={{
+                labels: history?.labels,
+                datasets: [...(history?.datasets.high_low || []), ...(history?.datasets.open_close || [])],
+              }}
+              className="mx-auto"
+              style={{ width: chartSize, height: chartSize / 2, maxWidth: '100%' }}
+            />
+          </div>
+        ) : (
+          <Skeleton className="mx-auto h-[400px] w-[800px] max-w-full rounded-xl aspect-[2/1]" />
+        )}
       </div>
     </>
   );

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { DailyHistoryResponse } from '@/interfaces/api';
 import { ChartDataset } from 'chart.js';
+import { DailyHistoryResponse } from '@/interfaces/api';
+import { API_KEY } from '@/env';
 
 export default function useStockHistory(symbol: string) {
   return useQuery<DailyHistoryResponse, Error, MappedHistory, [string, string]>({

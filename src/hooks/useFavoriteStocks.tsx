@@ -1,6 +1,7 @@
 import { SearchResponse } from '@/interfaces/api';
 import { useQueries } from '@tanstack/react-query';
 import axios from 'axios';
+import { API_KEY } from '@/env';
 
 export default function useFavoriteStocks(symbols: string[]) {
   return useQueries({
@@ -10,7 +11,7 @@ export default function useFavoriteStocks(symbols: string[]) {
         queryFn: async ({ queryKey }: any) => {
           const [_, sym] = queryKey;
           const { data } = await axios.get<SearchResponse>(
-            // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sym}&apikey=${API_KEY}`
+            // `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${sym}&apikey=${API_KEY}`
             'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo'
           );
           return data;
