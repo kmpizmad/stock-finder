@@ -57,14 +57,15 @@ export default function Sidebar(): JSX.Element {
       >
         {actionGroups.map((group, index) => {
           return (
-            <ul
+            <div
               key={`action-group-${index}`}
               className="flex flex-col items-center justify-around py-2 border-b min-w-[4.25rem] border-border"
             >
               {group.map(item => {
                 return (
-                  <li
+                  <Link
                     key={item.id}
+                    href={item.link}
                     className={cn('nav-item px-6 w-full flex items-center overflow-hidden', {
                       'active': item.id === selectedId,
                       'gap-2': isOpen,
@@ -74,12 +75,12 @@ export default function Sidebar(): JSX.Element {
                       setSelectedId(item.id);
                     }}
                   >
-                    <Link href={item.link}>{item.icon}</Link>
+                    <div>{item.icon}</div>
                     <div className="text-sm">{item.label}</div>
-                  </li>
+                  </Link>
                 );
               })}
-            </ul>
+            </div>
           );
         })}
       </div>
