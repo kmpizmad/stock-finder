@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { ScrollArea } from '../ui/scroll-area';
 import Link from 'next/link';
 import { isDescendant } from '@/lib/utils';
+import ErrorMessage from './ErrorMessage';
 
 export function SearchStock(): JSX.Element {
   const containerRef = useRef<React.ElementRef<'div'>>(null);
@@ -13,7 +14,7 @@ export function SearchStock(): JSX.Element {
   const [keyword, setKeyword] = useState<string>('');
   const [scrollAreaOpen, setScrollAreaOpen] = useState<boolean>(false);
   const [scrollHeight, setScrollHeight] = useState<number>(200);
-  const { data } = useSearchStock(keyword);
+  const { data, error } = useSearchStock(keyword);
 
   const update = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,30 +49,37 @@ export function SearchStock(): JSX.Element {
         placeholder="Search stock symbol..."
         onChange={update}
       />
-      {scrollAreaOpen ? (
-        <ScrollArea
-          className="mt-2 border rounded-md"
-          style={{ height: scrollHeight }}
-        >
-          <div
-            ref={stockContainerRef}
-            className="py-2"
+      {!error ? (
+        scrollAreaOpen ? (
+          <ScrollArea
+            className="mt-2 border rounded-md"
+            style={{ height: scrollHeight }}
           >
-            {data?.bestMatches?.map(match => {
-              return (
-                <Link
-                  key={match['1. symbol']}
-                  href={`/${match['1. symbol']}/details`}
-                  className="block px-3 py-1 cursor-pointer hover:bg-muted"
-                >
-                  <div className="text-lg font-bold">{match['1. symbol']}</div>
-                  <div className="italic font-light">{match['2. name']}</div>
-                </Link>
-              );
-            })}
-          </div>
-        </ScrollArea>
-      ) : null}
+            <div
+              ref={stockContainerRef}
+              className="py-2"
+            >
+              {data?.bestMatches?.map(match => {
+                return (
+                  <Link
+                    key={match['1. symbol']}
+                    href={`/${match['1. symbol']}/details`}
+                    className="block px-3 py-1 cursor-pointer hover:bg-muted"
+                  >
+                    <div className="text-lg font-bold">{match['1. symbol']}</div>
+                    <div className="italic font-light">{match['2. name']}</div>
+                  </Link>
+                );
+              })}
+            </div>
+          </ScrollArea>
+        ) : null
+      ) : (
+        <ErrorMessage
+          message={error.message}
+          resource={keyword}
+        />
+      )}
     </div>
   );
 }

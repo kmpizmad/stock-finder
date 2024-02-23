@@ -16,14 +16,24 @@ import useStockHistory from '@/hooks/useStockHistory';
 import { capitalize } from '@/lib/utils';
 import LoadingSkeleton from '../layout/LoadingSkeleton';
 import { Skeleton } from '../ui/skeleton';
+import ErrorMessage from './ErrorMessage';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LineElement, LinearScale, PointElement);
 
 const chartSize: number = 800;
 
 export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
-  const { data, isLoading } = useStockDetails(symbol);
-  const { data: history, isLoading: isHistoryLoading } = useStockHistory(symbol);
+  const { data, isLoading, error } = useStockDetails(symbol);
+  const { data: history, isLoading: isHistoryLoading, error: historyError } = useStockHistory(symbol);
+
+  if (error) {
+    return (
+      <ErrorMessage
+        message={error?.message}
+        resource={symbol}
+      />
+    );
+  }
 
   return (
     <>
@@ -52,16 +62,23 @@ export default function StockDetail({ symbol }: StockDetailProps): JSX.Element {
       <div className="text-center">
         <h1 className="mb-4 text-2xl font-bold">Last 30 day</h1>
         {!isHistoryLoading ? (
-          <div>
-            <Line
-              data={{
-                labels: history?.labels,
-                datasets: [...(history?.datasets.high_low || []), ...(history?.datasets.open_close || [])],
-              }}
-              className="mx-auto"
-              style={{ width: chartSize, height: chartSize / 2, maxWidth: '100%' }}
+          !historyError ? (
+            <div>
+              <Line
+                data={{
+                  labels: history?.labels,
+                  datasets: [...(history?.datasets.high_low || []), ...(history?.datasets.open_close || [])],
+                }}
+                className="mx-auto"
+                style={{ width: chartSize, height: chartSize / 2, maxWidth: '100%' }}
+              />
+            </div>
+          ) : (
+            <ErrorMessage
+              message={historyError.message}
+              resource={symbol}
             />
-          </div>
+          )
         ) : (
           <Skeleton className="mx-auto h-[400px] w-[800px] max-w-full rounded-xl aspect-[2/1]" />
         )}

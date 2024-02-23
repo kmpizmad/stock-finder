@@ -1,9 +1,11 @@
 'use client';
 
-import useFavoriteStocks from '@/hooks/useFavoriteStocks';
 import { useState } from 'react';
+import { Skull } from 'lucide-react';
+import useFavoriteStocks from '@/hooks/useFavoriteStocks';
 import Favorite from '../layout/Favorite';
 import LoadingSkeleton from '../layout/LoadingSkeleton';
+import ErrorMessage from './ErrorMessage';
 
 export default function FavoriteList(): JSX.Element {
   const [favorites, setFavorites] = useState<string[]>(JSON.parse(localStorage.getItem('favorites') || '[]'));
@@ -12,6 +14,15 @@ export default function FavoriteList(): JSX.Element {
   return (
     <div>
       {stocks.map((stock, idx) => {
+        if (stock.error) {
+          return (
+            <ErrorMessage
+              key={`${JSON.stringify(stock.data)}-${idx}`}
+              message={stock.error?.message}
+              resource={favorites[idx]}
+            />
+          );
+        }
         return (
           <div
             key={`${JSON.stringify(stock.data)}-${idx}`}
